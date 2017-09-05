@@ -158,6 +158,7 @@ El aprovisionamiento de la máquina virtual creada por vagrant se hace utilizand
 \begin{lstlisting}
 
 ---
+---
 - hosts: all
   user: ubuntu
   sudo: yes    
@@ -171,8 +172,13 @@ El aprovisionamiento de la máquina virtual creada por vagrant se hace utilizand
       
   tasks:       
 
+
+#Por alguna razon instala todos los paquetes menos libpq-dev
+
   -  name: Instalamos  paquetes necesarios
-     apt:  name= {{ item }}  state=present update_cache=yes
+     become: true
+     action: >
+      {{ ansible_pkg_mgr }} name= {{ item }}  state=installed update_cache=yes
      with_items:
       - build-essential
       - ruby-dev
@@ -185,22 +191,21 @@ El aprovisionamiento de la máquina virtual creada por vagrant se hace utilizand
       - libtool
       - bison
       - libffi-dev
-
-
-  -  name: Instalar git
-     apt:  
+     
+  -  name: instalamos git
+     apt:
        name: git
        state: present
-      
-  -  name: Instalar libpq-dev
-     apt:  
+
+  -  name: instalamos libpq-dev
+     apt:
        name: libpq-dev
        state: present
 
   -  name: clonamos repo de la web
      become: true  
      become_user: ubuntu
-     shell: git clone -b desarrollo https://github.com/LuisGi93/pradobot.git
+     shell: git clone  https://github.com/LuisGi93/pradobot.git
      args:
        creates: pradobot
        executable: /bin/bash
@@ -212,10 +217,11 @@ El aprovisionamiento de la máquina virtual creada por vagrant se hace utilizand
      args:
        chdir: pradobot
        executable: /bin/bash
--  name: Lo arrancamos
+     
+      -  name: Creamos las tablas de la base de datos
      become: true  
-     become_user: ubuntu
-     shell: source ~/.rvm/scripts/rvm && export TOKEN_BOT_MOODLE='' && export MOODLE_HOST="127.0.0.1/moodle" && export TOKEN_BOT='' && export URL_DATABASE="" && ruby bin/run.rb start
+     become_user: ubuntu 
+     shell: source ~/.rvm/scripts/rvm && export URL_DATABASE_TRAVIS="" &&  ruby config/primer_inicio_aplicacion.rb
      args:
        chdir: pradobot
        executable: /bin/bash
