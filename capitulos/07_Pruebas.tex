@@ -7,7 +7,7 @@
 Para probar la creación de la máquina virtual en Amazon AWS vamos a mostrar el resultados de ejecutar el Vagrantfile mostrado anteriomente. Es necesario ejecutar la orden \texttt{vagrant up --provider=aws}:
 \begin{figure}[H] %con el [H] le obligamos a situar aquí la figura
 \centering
-\includegraphics[scale=0.3]{imagenes/random/123bot.png}  %el parámetro scale permite agrandar o achicar la imagen. En el nombre de archivo puede especificar directorios
+\includegraphics[scale=0.3]{imagenes/random/2017-09-05-172749_1366x768_scrot.png}  %el parámetro scale permite agrandar o achicar la imagen. En el nombre de archivo puede especificar directorios
 
 \caption{Ejecutando los tests de la aplicación}\label{figura92}
 
@@ -17,14 +17,32 @@ En la salida de la orden se pueden ver las características de la máquina virtu
 
 \begin{figure}[H] %con el [H] le obligamos a situar aquí la figura
 \centering
-\includegraphics[scale=0.3]{imagenes/random/123bot2.png}  %el parámetro scale permite agrandar o achicar la imagen. En el nombre de archivo puede especificar directorios
+\includegraphics[scale=0.3]{imagenes/random/2017-09-05-174148_1366x768_scrot.png}  %el parámetro scale permite agrandar o achicar la imagen. En el nombre de archivo puede especificar directorios
 
 \caption{Finalización de aprovisonamiento con Ansible}\label{figura94}
 
 \end{figure}
 
-La última tarea del playbook de Ansible lo deja ejecutándose. Por falta de tiempo no se ha podido configurar Ansible para que despligue el proceso y asi no se quede pillado en la terminal y configurar adicionalmente una herramienta adicional que iniciara y parara la ejecución de pradobot en la máquina virtual cuando se deseara.
+Por último ejecutamos Capistrano para iniciar y parar la aplicación:
 
+\begin{figure}[H] %con el [H] le obligamos a situar aquí la figura
+\centering
+\includegraphics[scale=0.3]{imagenes/random/2017-09-05-184638_1366x768_scrot.png}  %el parámetro scale permite agrandar o achicar la imagen. En el nombre de archivo puede especificar directorios
+
+\caption{Iniciamos la ejecución de la aplicación utilizando Capistrano}\label{figura905}
+
+\end{figure}
+
+\begin{figure}[H] %con el [H] le obligamos a situar aquí la figura
+\centering
+\includegraphics[scale=0.3]{imagenes/random/2017-09-05-184725_1366x768_scrot.png}  %el parámetro scale permite agrandar o achicar la imagen. En el nombre de archivo puede especificar directorios
+
+\caption{Detenemos la ejecución de la aplicación}\label{figura910}
+
+\end{figure}
+
+
+Capistrano puede que al hacer el \texttt{cap production pradobot:daemon\_start} se quede paralizado siendo necesario hacer un control-C para que se salga de la terminal. La aplicación se seguirá ejecutando normalmente.
 
 
 \subsection{Tests}
@@ -33,21 +51,19 @@ Para ejecutar los tests unitarios que componen la aplicación es necesario ejecu
 
 \begin{figure}[H] %con el [H] le obligamos a situar aquí la figura
 \centering
-\includegraphics[scale=0.4]{imagenes/random/Screenshot_2017-08-30_16-40-12.png}  %el parámetro scale permite agrandar o achicar la imagen. En el nombre de archivo puede especificar directorios
+\includegraphics[scale=0.4]{imagenes/random/Screenshot_2017-09-04_18-28-17.png}  %el parámetro scale permite agrandar o achicar la imagen. En el nombre de archivo puede especificar directorios
 
-\caption{Ejecutando los tests de la aplicación}\label{figura92}
+\caption{Tras ejecutar los tests de la aplicación}\label{figura92}
 
 \end{figure}
 
-Como podemos ver en la imagen superior se muestra en verde cada test que ha pasado satisfactoriamente dando al final un resumen del número de tests ejecutados (79 examples) y de cuántos han fallado (0 failures) indicando además cuánto tiempo se han tardado en ejecutar los tests.
-\par
-En caso de fallo en algún test se muestran al final las razones por las que han fallado los tests en rojo.
+Como podemos ver en la imagen superior se muestra en verde cada test que ha pasado satisfactoriamente dando al final un resumen del número de tests ejecutados (156 examples) y de cuántos han fallado (0 failures) indicando además cuánto tiempo se han tardado en ejecutar los tests. También se muestra el porcentaje de código que cubren nuestros tests (93.13\%) generandose un reporte en formato html que permite ver qué lineas de código no se han cubierto:
 
 \begin{figure}[H] %con el [H] le obligamos a situar aquí la figura
 \centering
-\includegraphics[scale=0.6]{imagenes/random/Screenshot_2017-08-27_11-49-39.png}  %el parámetro scale permite agrandar o achicar la imagen. En el nombre de archivo puede especificar directorios
+\includegraphics[scale=0.3]{imagenes/random/Screenshot_2017-09-05_14-47-08.png}  %el parámetro scale permite agrandar o achicar la imagen. En el nombre de archivo puede especificar directorios
 
-\caption{Tras ejecutarse los tests se muestran los que dan fallo}\label{figura94}
+\caption{Reporte de cobertura de código de lo tests}\label{figura94}
 
 \end{figure}
 
@@ -65,7 +81,7 @@ Se ha utilizado la función \texttt{measure} del módulo de benchmarking de ruby
 
 \begin{figure}[H] %con el [H] le obligamos a situar aquí la figura
 \centering
-\includegraphics[scale=0.6]{imagenes/random/rend2.png}  %el parámetro scale permite agrandar o achicar la imagen. En el nombre de archivo puede especificar directorios
+\includegraphics[scale=0.5]{imagenes/random/rend2.png}  %el parámetro scale permite agrandar o achicar la imagen. En el nombre de archivo puede especificar directorios
 \caption{Tiempo que tarda pradobot en procesar mensajes procedentes de un chat privado y de unchat grupal}\label{figura94}
 \end{figure}
 
@@ -78,5 +94,5 @@ Como podemos observar los tiempos de CPU suelen rondar los 0.1 segundos, mientra
 \caption{Envío de mensaje utilizando telegram-cli}\label{figura94}
 \end{figure}
 
-Como se puede apreciar la diferencia de tiempo entre el tiempo de CPU total y el tiempo real sigue siendo significativa. El porqué de esta diferencia pienso que es debido a la latencia que supone recibir y enviar un mensaje a los servidores de Telegram, es decir, en el procesamiento del mensaje llega un punto en que se inicia el envío del mensaje de respuesta a Telegram, el sistema operativo, mientras los datos transitan por la red, pausa el programa transfiriendole el control de la CPU a otro proceso, se completa el envío y nuestro programa finaliza con el procesamiento del mensaje.
+Se puede apreciar que la diferencia de tiempo entre el tiempo de CPU total y el tiempo real sigue siendo significativa. El porqué de esta diferencia pienso que es debido a la latencia que supone recibir y enviar un mensaje a los servidores de Telegram, es decir, en el procesamiento del mensaje llega un punto en que se inicia el envío del mensaje de respuesta a Telegram, el sistema operativo, mientras los datos transitan por la red, pausa el programa transfiriendole el control de la CPU a otro proceso, se completa el envío y nuestro programa finaliza con el procesamiento del mensaje.
 Lo cual implica que la velocidad con la que el usuario ve una respuesta por parte del bot no es tanto la tardanza de procesar el mensaje sino de la rapidez con la que se envían y reciben los mensajes pudiendo decirse, por tanto, que si quisieramos que nuestro bot respondiera rápidamente no tendríamos que comprar un procesador más potente sino una conexión a internet más veloz.

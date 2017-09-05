@@ -56,9 +56,18 @@ Lo cual a efectos prácticos implica que solamente puede haber un único :
 
 \par 
 
- Una vez tienes el programa escrito en ruby que es capaz de obtener los mensajes que se le envían al bot por Telegram y de interactuar con los usuarios quedan dos partes más la base de datos y la instancia de Moodle. Todo el código con el programa implementado se puede encontrar en el zip adjunto a la memoria o bien en \url{https://github.com/LuisGi93/pradobot}
+ Una vez tienes el programa escrito en ruby que es capaz de obtener los mensajes que se le envían al bot por Telegram y de interactuar con los usuarios quedan dos partes más: la base de datos y la instancia de Moodle. 
+ 
+ \subsubsection{Git-Github}
+ 
+  Con la intención de que la construcción de la aplicación fuera lo más transparente posible y de dar la posibilidad de que otras personas pudieran contribuir a ella, se ha he hecho uso de la plataforma de desarrollo colaborativo Github y del sistema de control de versiones Git durante todo el proceso de implementación de la aplicación. 
+  
+  Github permite, entre otras cosas, ver los cambios realizados en el código desde el primer momento, la creación de \textit{issues} que pueden ser utilizados para indicar algún fallo en la aplicación y junto con git permite tener varias versiones del código.
+  
+ Todo el código del programa se puede encontrar en \url{https://github.com/LuisGi93/pradobot}.
 
-\subsubsection{Base de datos}
+
+\subsection{Base de datos}
 
 Como base de datos he utilizado PostgreSQL principalmente porque es \textit{opensource}, fácil de instalar y no he visto en ningún sitio que tenga diferencias de rendimiento significativas comparada con otras bases de datos importantes. Aún así debido al uso de una librería de ruby llamada \href{https://github.com/jeremyevans/sequel}{Sequel}, que hace de adaptador entre la aplicación y la base de datos, se podría utilizar cualquier otra base de datos.
 
@@ -71,12 +80,12 @@ Sequel hace uso de ORM para la comunicación con la base de datos. También ofre
 \item La abstracción que te ofrece el uso de ORM simplifica mucho el trabajar con la base de datos.
 \end{itemize}
 
-\subsubsection{Moodle}
+\subsection{Moodle}
 
 Durante el desarrollo del programa se ha utilizado la versión 3.2.1 de Moodle. Aunque también se ha probado con la versión 3.0.10 y sea posiblemente la versión mínima soportada por el programa ya que las anteriores versiones no tienen algunas de las funciones de la API de Moodle utilizadas por el programa.
 
 
-\subsubsection{Despliegue}
+\subsection{Despliegue}
 
 Para facilitar la instalación de la aplicación incluimos un fichero \enquote*{Vagrantfile} que permite la creación de una máquina virtual con Ubuntu 14.04 en Amazon AWS con pradobot y todas sus dependencias instaladas en ella. El contenido del Vagrantfile es el siguiente:
 
@@ -143,7 +152,7 @@ El Vagrantfile cuenta con los siguientes elementos:
 \end{itemize}
 \end{itemize}
 
-\subsubsection{Aprivisionamiento}
+\subsection{Aprivisionamiento}
 
 El aprovisionamiento de la máquina virtual creada por vagrant se hace utilizando el programa Ansible. Ansible hace uso de ssh y de un tipo de archivos llamados \enquote*{playbooks} en las cuales se especifican las órdenes necesarias para el aprovisonamiento de la máquina virtual. El playbook utilizado por pradobot es el siguiente:
 \begin{lstlisting}
@@ -251,7 +260,51 @@ end
 \end{lstlisting}
 En el se especifican las librerías a obtener, su versión si se quiere y de donde obtenerlas. Por último inicia la ejecución de pradobot.
 
-\subsubsection{Tests}
+\subsection{Control ejecución}
+
+Una vez hemos creado la máquina con Vagrant y haberla aprovisionado utilizando Ansible, tenemos que poder controlar el inicio y fin de ejecución de la aplicación de manera automática. Para ello vamos a utilizar una herramienta llamada Capistrano. Capistrano permite la ejecución de comandos remotos a través de ssh. En primer lugar lo instalamos haciendo \texttt{gem install capistrano} tras lo cual ejecutamos la orden \texttt{cap install} en el directorio de nuestro proyecto. Esto provocará la generación de una serie de archivos. Buscamos \enquote*{config/deploy.rb} y le añadimos información para la autenticación via ssh:
+\begin{lstlisting}[language=Ruby]
+
+set :ssh_options, {
+  forward_agent: true,
+  auth_methods: ["publickey"],
+  keys: ["path_a_llave_pem/pradobotllave.pem"]
+}
+
+\end{lstlisting}
+
+En Capistrano se definen "tareas" donde defines que es lo que quieres que haga capistrano. Para establecer la tarea creamos un fichero en lib/capistrano/tasks acabado en .rake y en el defino la siguiente tarea:
+
+
+\begin{lstlisting}[language=Ruby]
+
+require "resolv-replace.rb"
+
+role :yoquese, "yoquese"
+
+
+namespace :pradobot do
+  desc "Iniciamos la aplicacion"
+
+  task :daemon_start do
+	on "ubuntu@ip.us-west-2.compute.amazonaws.com" do
+		execute  'source ~/.rvm/scripts/rvm && export TOKEN_BOT_MOODLE="" && export MOODLE_HOST="" && export TOKEN_BOT="" && export URL_DATABASE_TRAVIS="" && nohup ruby pradobot/bin/run.rb && true & '
+	end
+  end
+  
+  desc "Paramos la aplicacion"  
+  task :daemon_stop do
+	on "ubuntu@ip.us-west-2.compute.amazonaws.com" do
+		execute  'pkill ruby'
+	end
+  end
+end
+
+\end{lstlisting}
+
+Con lo cual podemos ejecutar el comando \texttt{cap production pradobot:daemon\_start} para iniciar su ejecución y pararlo utilizando \texttt{cap production pradobot:daemon\_stop}. \par Para el inicio de la ejecución se hace uso del comando nohup, que desliga a un proceso de la terminal de tal forma que cuando se lanza el programa en segundo plano (\texttt{ruby pradobot/bin/run.rb \&\& true \&}) su ejecución no termina al finalizar la ejecución de la orden por ssh. 
+
+\subsection{Tests}
 
 
 Los tests se han implementado utilizando Rake. Rake es una herramienta que permite entre otras cosas ejecutar tests de ruby para lo cual necesita disponer de un archivo llamado Rakefile en el cual se le indica dónde puede encontrar los tests y qué pasos hay que dar para ejecutarlos. El Rakefile de pradobot es el siguiente:
@@ -386,3 +439,6 @@ En esta fragmento de código podemos encontrar dos tests que vienen compredidos 
  \item En el primero el objeto stub\_bot espera que se llame al método \texttt{stub\_bot.api.send\_message} que se le pase como argumento un objetivo tipo hash que entre sus llaves no tenga una llamada \texttt{:reply\_markup} y sí una llave llamada \texttt{text} que tenga el valor de \texttt{"Escriba a continuación la duda que desea crear relacionada con *nombre del curso*:"}. 
  \item El segundo test es parecido solo que ahora se observa el comportamiento de la clase cuando ha recibido su segundo mensaje y se comprueba qué le manda al bot como respuesta de este segundo mensaje.
  \end{itemize}
+ \par
+ 
+ Por último para ver la cobertura sobre el código del programa que tienen nuestros tests y comprobar en qué puntos de la aplicación faltan pruebas unitarias por realizar se ha hecho de una librería llamada \textbf{SimpleCov}.
