@@ -442,7 +442,8 @@ Al principio se define stub\_bot que actúa a la vez como mock y stub para, a co
 \par
 En esta fragmento de código podemos encontrar dos tests que vienen compredidos entre el \texttt{it .. do} y el \texttt{end} que lo cierra. En los dos tests mostrados  se definen mediante la orden \texttt{expect(stub).to receive(nombre método)[  argumentos ]} las expectativas del test.
 \begin{itemize}
- \item En el primero el objeto stub\_bot espera que se llame al método \texttt{stub\_bot.api.send\_message} que se le pase como argumento un objetivo tipo hash que entre sus llaves no tenga una llamada \texttt{:reply\_markup} y sí una llave llamada \texttt{text} que tenga el valor de \texttt{"Escriba a continuación la duda que desea crear relacionada con *nombre del curso*:"}. 
+ \item En el primero el objeto stub\_bot espera que se llame al método 
+ \texttt{stub\_bot.api.send\_message} que se le pase como argumento un objetivo tipo hash que entre sus llaves no tenga una llamada \texttt{:reply\_markup} y sí una llave llamada \texttt{text} que tenga el valor de \texttt{"Escriba a continuación la duda que desea crear relacionada con *nombre del curso*:"}. 
  \item El segundo test es parecido solo que ahora se observa el comportamiento de la clase cuando ha recibido su segundo mensaje y se comprueba qué le manda al bot como respuesta de este segundo mensaje.
  \end{itemize}
  \par
