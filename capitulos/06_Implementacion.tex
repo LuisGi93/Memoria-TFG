@@ -24,7 +24,7 @@ Teniendo conocimiento de Ruby y habiendo probado en alguna asignatura el correct
 
 \caption{Uso del método SendMessage por parte del bot }\label{figura531}
 \end{figure}
-El único inconveniente que tiene es que solamente puede haber una instancia del cliente que recibe mensajes. Esto es debido a que para que un bot de Telegram reciba los mensajes que le llegan tiene dos alternativas \textit{long polling} y \textit{Webhook}\cite{telegram10}\cite{telegram20} :
+El único inconveniente que tiene es que solamente puede haber una instancia del cliente que recibe mensajes. Esto es debido a que para que un bot de Telegram reciba los mensajes que le llegan tiene dos alternativas \textit{long polling} y \textit{Webhook} :
 \begin{itemize}
 \item \textit{Long polling}: El bot periódicamente llama a los servidores de Telegram utilizando un método que devuelve los 100 primeros mensajes  sin contestar que tiene el bot. Más lento pero mucho más facil de utilizar.
 \item \textit{Webhook}: Hace falta implementar un servidor con una IP pública o un nombre de dominio e indicarle a Telegram que cuando se le manda un mensaje al bot éste lo redirija a este servidor. Rápido pero más complicado de montar.
