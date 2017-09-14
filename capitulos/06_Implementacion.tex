@@ -14,7 +14,7 @@ A la hora de implementar el programa una variable importante es la facilidad con
 \item Ruby: \url{https://github.com/atipugin/telegram-bot-ruby}
 \end{itemize}
 
-Teniendo conocimiento de Ruby y habiendo probado en alguna asignatura el correcto funcionamiento de la librería de Ruby, decidí usarla. Esta librería te permite hacer uso de los métodos de la API para bots de Telegram con un formato \textit{camel\_case} es decir las palábras de los métodos en minúscula y separadas por una barra baja. Por lo demás acepta los mismos parámetros:
+Teniendo conocimiento de Ruby y habiendo probado en alguna asignatura el correcto funcionamiento de la librería de Ruby, decidí usarla. Esta librería te permite hacer uso de los métodos de la API para bots de Telegram con un formato \textit{camel\_case} es decir las palabras de los métodos en minúscula y separadas por una barra baja. Por lo demás acepta los mismos parámetros:
 
 
 
@@ -440,7 +440,7 @@ end
 
 Al principio se define stub\_bot que actúa a la vez como mock y stub para, a continuación, especificarse los métodos que tiene que aceptar mediante la orden \texttt{allow(stub).to receive(nombre método)[ datos respuesta ]}.
 \par
-En esta fragmento de código podemos encontrar dos tests que vienen compredidos entre el \texttt{it .. do} y el \texttt{end} que lo cierra. En los dos tests mostrados  se definen mediante la orden \texttt{expect(stub).to receive(nombre método)[  argumentos ]} las expectativas del test.
+En esta fragmento de código podemos encontrar dos tests que vienen comprendidos entre el \texttt{it .. do} y el \texttt{end} que lo cierra. En los dos tests mostrados  se definen mediante la orden \texttt{expect(stub).to receive(nombre método)[  argumentos ]} las expectativas del test.
 \begin{itemize}
  \item En el primero el objeto stub\_bot espera que se llame al método 
  \texttt{stub\_bot.api.send\_message} que se le pase como argumento un objetivo tipo hash que entre sus llaves no tenga una llamada \texttt{:reply\_markup} y sí una llave llamada \texttt{text} que tenga el valor de \texttt{"Escriba a continuación la duda que desea crear relacionada con *nombre del curso*:"}. 

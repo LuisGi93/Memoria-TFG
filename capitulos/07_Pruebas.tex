@@ -4,7 +4,7 @@
 
 \subsection{Prueba despliegue}
 
-Para probar la creación de la máquina virtual en Amazon AWS vamos a mostrar el resultados de ejecutar el Vagrantfile mostrado anteriomente. Es necesario ejecutar la orden \texttt{vagrant up --provider=aws}:
+Para probar la creación de la máquina virtual en Amazon AWS vamos a mostrar el resultados de ejecutar el Vagrantfile mostrado anteriormente. Es necesario ejecutar la orden \texttt{vagrant up --provider=aws}:
 \begin{figure}[H] %con el [H] le obligamos a situar aquí la figura
 \centering
 \includegraphics[scale=0.3]{imagenes/random/2017-09-05-172749_1366x768_scrot.png}  %el parámetro scale permite agrandar o achicar la imagen. En el nombre de archivo puede especificar directorios
@@ -19,7 +19,7 @@ En la salida de la orden se pueden ver las características de la máquina virtu
 \centering
 \includegraphics[scale=0.3]{imagenes/random/2017-09-05-174148_1366x768_scrot.png}  %el parámetro scale permite agrandar o achicar la imagen. En el nombre de archivo puede especificar directorios
 
-\caption{Finalización de aprovisonamiento con Ansible}\label{figura94}
+\caption{Finalización de aprovisionamiento con Ansible}\label{figura94}
 
 \end{figure}
 
@@ -57,7 +57,7 @@ Para ejecutar los tests unitarios que componen la aplicación es necesario ejecu
 
 \end{figure}
 
-Como podemos ver en la imagen superior se muestra en verde cada test que ha pasado satisfactoriamente dando al final un resumen del número de tests ejecutados (156 examples) y de cuántos han fallado (0 failures) indicando además cuánto tiempo se han tardado en ejecutar los tests. También se muestra el porcentaje de código que cubren nuestros tests (93.13\%) generandose un reporte en formato html que permite ver qué lineas de código no se han cubierto:
+Como podemos ver en la imagen superior se muestra en verde cada test que ha pasado satisfactoriamente dando al final un resumen del número de tests ejecutados (156 examples) y de cuántos han fallado (0 failures) indicando además cuánto tiempo se han tardado en ejecutar los tests. También se muestra el porcentaje de código que cubren nuestros tests (93.13\%) generándose un reporte en formato html que permite ver qué lineas de código no se han cubierto:
 
 \begin{figure}[H] %con el [H] le obligamos a situar aquí la figura
 \centering
@@ -94,5 +94,5 @@ Como podemos observar los tiempos de CPU suelen rondar los 0.1 segundos, mientra
 \caption{Envío de mensaje utilizando telegram-cli}\label{figura94}
 \end{figure}
 
-Se puede apreciar que la diferencia de tiempo entre el tiempo de CPU total y el tiempo real sigue siendo significativa. El porqué de esta diferencia pienso que es debido a la latencia que supone recibir y enviar un mensaje a los servidores de Telegram, es decir, en el procesamiento del mensaje llega un punto en que se inicia el envío del mensaje de respuesta a Telegram, el sistema operativo, mientras los datos transitan por la red, pausa el programa transfiriendole el control de la CPU a otro proceso, se completa el envío y nuestro programa finaliza con el procesamiento del mensaje.
-Lo cual implica que la velocidad con la que el usuario ve una respuesta por parte del bot no es tanto la tardanza de procesar el mensaje sino de la rapidez con la que se envían y reciben los mensajes pudiendo decirse, por tanto, que si quisieramos que nuestro bot respondiera rápidamente no tendríamos que comprar un procesador más potente sino una conexión a internet más veloz.
+Se puede apreciar que la diferencia de tiempo entre el tiempo de CPU total y el tiempo real sigue siendo significativa. El porqué de esta diferencia pienso que es debido a la latencia que supone recibir y enviar un mensaje a los servidores de Telegram, es decir, en el procesamiento del mensaje llega un punto en que se inicia el envío del mensaje de respuesta a Telegram, el sistema operativo, mientras los datos transitan por la red, pausa el programa transfiriéndole el control de la CPU a otro proceso, se completa el envío y nuestro programa finaliza con el procesamiento del mensaje.
+Lo cual implica que la velocidad con la que el usuario ve una respuesta por parte del bot no es tanto la tardanza de procesar el mensaje sino de la rapidez con la que se envían y reciben los mensajes pudiendo decirse, por tanto, que si quisiéramos que nuestro bot respondiera rápidamente no tendríamos que comprar un procesador más potente sino una conexión a internet más veloz.
